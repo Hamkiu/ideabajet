@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SenaraiElemen;
+use App\Models\SenaraiLokasi;
 use Illuminate\Http\Request;
 
 class CadanganController extends Controller
 {
+    public function index()
+    {
+        $elemenList_1 = SenaraiElemen::whereNotNull('elemen_1')->orderBy('elemen_1', 'asc')->get();
+        $lokasiList = SenaraiLokasi::whereNotNull('lokasi')->orderBy('lokasi', 'asc')->get();
+        return view('pencadang.index', compact('elemenList_1', 'lokasiList'));
+    }
+
     public function store(Request $request)
     {
         dd($request->all());

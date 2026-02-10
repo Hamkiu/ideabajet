@@ -8,7 +8,7 @@
             <!-- ============================================================== -->
             <!-- Logo -->
             <!-- ============================================================== -->
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
+            <a class="navbar-brand" href="{{ route('pencadang') }}">
                 <!-- Logo icon -->
                 <b class="logo-icon">
                     <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -21,10 +21,10 @@
                 <!-- Logo text -->
                 <span class="logo-text fw-bold">
                     <span class="dark-logo" style="font-size:16px;">
-                        Belanjawan 2027
+                        Ideabajet 2027
                     </span>
                     <span class="light-logo" style="font-size:16px; color:#fff;">
-                        Belanjawan 2027
+                        Ideabajet 2027
                     </span>
                 </span>
                 

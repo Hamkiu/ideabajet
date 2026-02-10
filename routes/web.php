@@ -5,16 +5,22 @@ use App\Http\Controllers\CadanganController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-return view('dashboard');
-})->name('dashboard');
+// Route::get('/', function () {
+// return view('dashboard');
+// })->name('dashboard');
 
 // Route::get('/hello', function () {
 //     return '<h1>Hello World</h1>';
 // });
+Route::get('/', function () {
+    return redirect()->route('pencadang');
+});
 
-Route::post('/cadangan/store', [CadanganController::class, 'store'])->name('cadangan.store');
-Route::post('/cadangan/validatestep1', [CadanganController::class, 'validateStep1'])->name('cadangan.validatestep1');
+Route::prefix('pencadang')->group(function () {
+    Route::get('/', [CadanganController::class, 'index'])->name('pencadang');
+    Route::post('/store', [CadanganController::class, 'store'])->name('pencadang.store');
+    Route::post('/validatestep1', [CadanganController::class, 'validateStep1'])->name('pencadang.validatestep1');
+});
 
 
 Route::prefix('jkkpmains')->group(function () {

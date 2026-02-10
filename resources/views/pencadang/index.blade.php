@@ -21,7 +21,7 @@
         <div class="card-body wizard-content">
             <h4 class="card-title blink-text">Sila isi maklumat di bawah</h4>
             {{-- <h6 class="card-subtitle">You can us the validation like what we did</h6> --}}
-            <form method="POST" action="{{ route('cadangan.store') }}" class="validation-wizard wizard-circle m-t-40">
+            <form method="POST" action="{{ route('pencadang.store') }}" class="validation-wizard wizard-circle m-t-40">
                 @csrf
                 <!-- Step 1 -->
                 <h6>Step 1</h6>
@@ -118,4 +118,13 @@
 <script src="{{ asset('template/js/wizard.js') }}"></script>
 <script src="{{ asset('template/js/append-ahli-majlis.js') }}"></script>
 <script src="{{ asset('template/js/append/elemen1.js') }}"></script>
+<script>
+      window.APP = {
+        validateStep1Url: "{{ route('pencadang.validatestep1') }}",
+        csrfToken: "{{ csrf_token() }}"
+    };
+    const elemenList1 = @json($elemenList_1);
+    const lokasiList  = @json($lokasiList);
+</script>
+
 @endpush

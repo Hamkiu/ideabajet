@@ -20,7 +20,6 @@
 
     <link href="{{ asset('template/libs/jquery-steps/jquery.steps.css') }}" rel="stylesheet">
     <link href="{{ asset('template/libs/jquery-steps/steps.css') }}" rel="stylesheet">
-    <link href="{{ asset('template/css/style.min.css') }}" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{{ asset('template/css/style.min.css') }}" rel="stylesheet">
@@ -30,6 +29,7 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    @stack('styles')
 </head>
 
 <body>
@@ -90,6 +90,11 @@
             <!-- Container fluid  -->
             <!-- ============================================================== -->
             <div class="container-fluid">
+                <div class="text-center mb-4">
+                    <h2 class="font-weight-bold text-uppercase">
+                        IDEA BAJET 2027
+                    </h2>
+                </div>
                 @yield('content')
             </div>
             <!-- ============================================================== -->
@@ -154,7 +159,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('template/libs/jquery-steps/build/jquery.steps.min.js') }}"></script>
     <script src="{{ asset('template/libs/jquery-validation/dist/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('template/js/custom.js') }}"></script>
 
 
 

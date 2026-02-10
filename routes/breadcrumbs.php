@@ -5,6 +5,10 @@ Breadcrumbs::for('dashboard', function ($trail) {
     $trail->push('Home', route('dashboard'));
 });
 
+Breadcrumbs::for('pencadang', function ($trail) {
+    $trail->push('Home', route('pencadang'));
+});
+
 //Dashboard > JKKP
 Breadcrumbs::for('jkkpmains', function ($trail) {
     $trail->parent('dashboard');

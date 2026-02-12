@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let appended = false;
 
     let elemenOptions = `<option value="">--Sila Pilih Sub Elemen--</option>`;
-    elemenList1.forEach(item => {
+    elemenList2.forEach(item => {
         elemenOptions += `
-            <option value="${item.elemen_1}">
-                ${item.elemen_1}
+            <option value="${item.elemen_2}">
+                ${item.elemen_2}
             </option>`;
     });
 
@@ -19,17 +19,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     
-    document.getElementById('btnAddElemen1').addEventListener('click', function () {
+    document.getElementById('btnAddElemen2').addEventListener('click', function () {
     
-        const pilihan = document.getElementById('pilihan_e1').value;
-        const lokasi  = document.getElementById('lokasi_e1').value;
-        const butiran = document.getElementById('butiran_e1').value;
+        const pilihan = document.getElementById('pilihan_e2').value;
+        const lokasi  = document.getElementById('lokasi_e2').value;
+        const butiran = document.getElementById('butiran_e2').value;
     
         // ❌ Validate input atas dulu
         if (!pilihan || !lokasi || !butiran) {
             Swal.fire({
                 icon: 'warning',
-                title: 'Elemen 1 tidak lengkap',
+                title: 'Elemen 2 tidak lengkap',
                 text: 'Sila Lengkapkan Pilihan Pertama Dahulu.'
             });
             return;
@@ -47,22 +47,22 @@ document.addEventListener('DOMContentLoaded', function () {
     
         // ✅ Append input boleh edit
         const html = `
-        <div class="card mt-3" id="elemen1-extra">
+        <div class="card mt-3" id="elemen2-extra">
             <div class="card-body">
                 <div class="d-flex justify-content-end mb-2">
                     <button type="button"
                             class="btn btn-sm btn-danger"
-                            id="btnDeleteElemen1">
+                            id="btnDeleteElemen2">
                         <i class="fas fa-trash" title="Hapus Elemen"></i>
                     </button>
                 </div>
         
-                <div class="row elemen1-row">
+                <div class="row elemen2-row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Pilihan :</label>
                             <select class="custom-select form-control"
-                                    name="pilihan_e1[]">
+                                    name="pilihan_e2_extra">
                                 ${elemenOptions}
                             </select>
                         </div>
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="form-group">
                             <label>Lokasi :</label>
                             <select class="custom-select form-control"
-                                    name="lokasi_e1[]">
+                                    name="lokasi_e2_extra">
                                 ${lokasiOptions}
                             </select>
                         </div>
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <label>Butiran :</label>
                             <input type="text"
                                    class="form-control"
-                                   name="butiran_e1[]"
+                                   name="butiran_e2_extra"
                                    placeholder="Masukkan Butiran">
                         </div>
                     </div>
@@ -93,16 +93,16 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
         
     
-        document.getElementById('elemen1-append')
+        document.getElementById('elemen2-append')
                 .insertAdjacentHTML('beforeend', html);
     
         appended = true;
     
         // 🗑 Delete handler
-        document.getElementById('btnDeleteElemen1')
+        document.getElementById('btnDeleteElemen2')
             .addEventListener('click', function () {
     
-                document.getElementById('elemen1-extra').remove();
+                document.getElementById('elemen2-extra').remove();
                 appended = false;
             });
     });

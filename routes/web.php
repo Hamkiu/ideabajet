@@ -20,6 +20,9 @@ Route::prefix('pencadang')->group(function () {
     Route::get('/', [CadanganController::class, 'index'])->name('pencadang');
     Route::post('/store', [CadanganController::class, 'store'])->name('pencadang.store');
     Route::post('/validatestep1', [CadanganController::class, 'validateStep1'])->name('pencadang.validatestep1');
+    Route::post('/validatestep2', [CadanganController::class, 'validateStep2'])->name('pencadang.validatestep2');
+
+    Route::get('/getaset', [CadanganController::class, 'getAset'])->name('pencadang.getaset');
 });
 
 

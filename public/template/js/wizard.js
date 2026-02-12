@@ -56,6 +56,48 @@ $(".validation-wizard").steps({
         return isValid;
     }
 
+    // VALIDATE STEP 2
+if (currentIndex === 1 && newIndex === 2) {
+
+    let isValid = false;
+
+    $.ajax({
+        url: window.APP.validateStep2Url,
+        type: 'POST',
+        data: $('.validation-wizard').serialize(),
+        async: false,
+        headers: {
+            'X-CSRF-TOKEN': window.APP.csrfToken
+        },
+        success: function () {
+            isValid = true;
+        },
+        error: function (xhr) {
+
+            let errors = xhr.responseJSON.errors;
+            let html = '<ul style="text-align:left;">';
+
+            Object.values(errors).forEach(messages => {
+                messages.forEach(msg => {
+                    html += `<li>${msg}</li>`;
+                });
+            });
+
+            html += '</ul>';
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Maklumat Tidak Lengkap',
+                html: html
+            });
+        }
+    });
+
+    return isValid;
+}
+
+
+
     return true;
     },
 

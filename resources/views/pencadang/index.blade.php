@@ -118,13 +118,30 @@
 <script src="{{ asset('template/js/wizard.js') }}"></script>
 <script src="{{ asset('template/js/append-ahli-majlis.js') }}"></script>
 <script src="{{ asset('template/js/append/elemen1.js') }}"></script>
+<script src="{{ asset('template/js/append/elemen2.js') }}"></script>
+<script src="{{ asset('template/js/append/elemen3.js') }}"></script>
+<script src="{{ asset('template/js/append/elemen4.js') }}"></script>
+<script src="{{ asset('template/js/append/elemen5.js') }}"></script>
+<script src="{{ asset('template/js/append/elemen6.js') }}"></script>
+<script src="{{ asset('template/js/append/elemen7.js') }}"></script>
+<script src="{{ asset('template/js/append/elemen8.js') }}"></script>
+<script src="{{ asset('template/js/get-aset.js') }}"></script>
 <script>
       window.APP = {
         validateStep1Url: "{{ route('pencadang.validatestep1') }}",
+        validateStep2Url: "{{ route('pencadang.validatestep2') }}",
+        getAsetUrl: "{{ route('pencadang.getaset') }}",
         csrfToken: "{{ csrf_token() }}"
     };
     const elemenList1 = @json($elemenList_1);
     const lokasiList  = @json($lokasiList);
+    const elemenList2 = @json($elemenList_2);
+    const elemenList3 = @json($elemenList_3);
+    const elemenList4 = @json($elemenList_4);
+    const elemenList5 = @json($elemenList_5);
+    const elemenList6 = @json($elemenList_6);
+    const elemenList7 = @json($elemenList_7);
+    const elemenList8 = @json($elemenList_8);
 </script>
 
 @endpush

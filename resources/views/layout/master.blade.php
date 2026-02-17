@@ -92,7 +92,7 @@
             <div class="container-fluid">
                 <div class="text-center mb-4">
                     <h2 class="font-weight-bold text-uppercase">
-                        IDEA BAJET 2027
+                        IDEA BAJET <script>document.write(new Date().getFullYear() + 1)</script>
                     </h2>
                 </div>
                 @yield('content')

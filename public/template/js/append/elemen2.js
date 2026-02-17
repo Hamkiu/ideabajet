@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="form-group">
                             <label>Pilihan :</label>
                             <select class="custom-select form-control"
-                                    name="pilihan_e2_extra">
+                                    name="pilihan_e2[]">
                                 ${elemenOptions}
                             </select>
                         </div>
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="form-group">
                             <label>Lokasi :</label>
                             <select class="custom-select form-control"
-                                    name="lokasi_e2_extra">
+                                    name="lokasi_e2[]">
                                 ${lokasiOptions}
                             </select>
                         </div>
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <label>Butiran :</label>
                             <input type="text"
                                    class="form-control"
-                                   name="butiran_e2_extra"
+                                   name="butiran_e2[]"
                                    placeholder="Masukkan Butiran">
                         </div>
                     </div>

@@ -36,7 +36,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="wfirstName2"> Nama : <span class="text-danger">*</span> </label>
-                                <input type="text" class="form-control" id="wfirstName2" name="nama"> </div>
+                                <input type="text" class="form-control" id="wfirstName2" name="nama" style="text-transform: uppercase;"> </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -142,6 +142,16 @@
     const elemenList6 = @json($elemenList_6);
     const elemenList7 = @json($elemenList_7);
     const elemenList8 = @json($elemenList_8);
+
+    @if(session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Berjaya!',
+            text: "{{ session('success') }}",
+            timer: 3000,
+            showConfirmButton: true
+        });        
+    @endif
 </script>
 
 @endpush

@@ -21,10 +21,10 @@
                 <!-- Logo text -->
                 <span class="logo-text fw-bold">
                     <span class="dark-logo" style="font-size:16px;">
-                        Ideabajet 2027
+                        Ideabajet <script>document.write(new Date().getFullYear() + 1)</script>
                     </span>
                     <span class="light-logo" style="font-size:16px; color:#fff;">
-                        Ideabajet 2027
+                        Ideabajet <script>document.write(new Date().getFullYear() + 1)</script>
                     </span>
                 </span>
                 

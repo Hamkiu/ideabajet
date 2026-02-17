@@ -6,6 +6,10 @@ use App\Models\SenaraiElemen;
 use App\Models\SenaraiLokasi;
 use App\Models\Elemen5;
 use App\Models\Aset5;
+use App\Models\MaklumatPencadang;
+use App\Models\PilihanPencadang;
+use App\Mail\IdeaBajetSubmitted;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class CadanganController extends Controller
@@ -25,9 +29,77 @@ class CadanganController extends Controller
     }
 
     public function store(Request $request)
-    {
-        dd($request->all());
+{
+    // dd($request->all());
+    $pencadangId = generateId('PC', 'maklumat_pencadang', 'id');
+
+    // Simpan maklumat pencadang
+    $pencadang = MaklumatPencadang::create([
+        'id'        => $pencadangId,
+        'nama'      => strtoupper($request->nama),
+        'email'     => $request->email,
+        'jantina'   => $request->jantina,
+        'bangsa'    => $request->bangsa,
+        'umur'      => $request->umur,
+        'pekerjaan' => $request->pekerjaan,
+        'zon'       => $request->zon_ahli_majlis,
+        'cadangan'  => strtolower($request->cadangan),
+    ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Loop Elemen 1 - 8
+    |--------------------------------------------------------------------------
+    */
+
+    for ($i = 1; $i <= 8; $i++) {
+
+        $pilihanKey = "pilihan_e{$i}";
+        $lokasiKey  = "lokasi_e{$i}";
+        $butiranKey = "butiran_e{$i}";
+        $asetKey    = "aset_e{$i}"; // hanya wujud untuk elemen 5
+
+        if ($request->has($pilihanKey)) {
+
+            foreach ($request->$pilihanKey as $index => $value) {
+
+                if (!$value) continue; // skip jika kosong
+
+                $pilihanText = $value;
+                $asetText = $request->$asetKey[$index] ?? null;
+
+                // 👉 KHAS UNTUK ELEMEN 5
+                if ($i == 5) {
+
+                    $elemen = Elemen5::find($value);
+                    $pilihanText = $elemen?->elemen_5;
+
+                    $aset = Aset5::find($asetText);
+                    $asetText = $aset?->nama_aset;
+                }
+
+                PilihanPencadang::create([
+                    'id_pencadang' => $pencadangId,
+                    'no_elemen'    => $i,
+                    'pilihan'      => $pilihanText,
+                    'lokasi'       => $request->$lokasiKey[$index] ?? null,
+                    'aset'         => $asetText,
+                    'butiran'      => strtolower($request->$butiranKey[$index] ?? null),
+                ]);
+            }
+        }
     }
+    $pencadang->load('elemen');
+    Mail::to($request->email)->send(new IdeaBajetSubmitted($pencadang));
+    // Mail::to($pencadang->email)
+    // ->queue(new IdeaBajetSubmitted($pencadang));
+
+    return redirect()
+        ->route('pencadang')
+        ->with('success', 'Cadangan berjaya disimpan dan email telah dihantar kepada ' . $request->email);
+}
+
+    
 
     public function validateStep1(Request $request)
     {
@@ -64,45 +136,60 @@ class CadanganController extends Controller
 
     public function validateStep2(Request $request)
     {
-        // dd($request->all());
         $errors = [];
-    $atLeastOne = false;
-
-    for ($i = 1; $i <= 8; $i++) {
-
-        $pilihan = $request->input("pilihan_e{$i}");
-        $lokasi  = $request->input("lokasi_e{$i}");
-        $butiran = $request->input("butiran_e{$i}");
-
-        $filled = collect([$pilihan, $lokasi, $butiran])
-                    ->filter(fn($v) => !empty($v))
-                    ->count();
-
-        // semua kosong → ignore
-        if ($filled === 0) {
-            continue;
+        $atLeastOne = false;
+    
+        for ($i = 1; $i <= 8; $i++) {
+    
+            // Ambil sebagai array
+            $pilihan = $request->input("pilihan_e{$i}", []);
+            $lokasi  = $request->input("lokasi_e{$i}", []);
+            $butiran = $request->input("butiran_e{$i}", []);
+    
+            // Elemen 5 guna aset bukan lokasi
+            if ($i == 5) {
+                $lokasi = $request->input("aset_e5", []);
+            }
+    
+            $max = max(count($pilihan), count($lokasi), count($butiran));
+    
+            for ($x = 0; $x < $max; $x++) {
+    
+                $p = trim($pilihan[$x] ?? '');
+                $l = trim($lokasi[$x] ?? '');
+                $b = trim($butiran[$x] ?? '');
+    
+                $filled = collect([$p, $l, $b])
+                            ->filter(fn($v) => $v !== '')
+                            ->count();
+    
+                // Semua kosong → ignore (append kosong boleh next)
+                if ($filled === 0) {
+                    continue;
+                }
+    
+                // Isi tapi tak lengkap → BLOCK
+                if ($filled !== 3) {
+                    $errors["elemen{$i}"][] =
+                        "Elemen {$i} pilihan " . ($x + 1) . " tidak lengkap.";
+                } else {
+                    $atLeastOne = true;
+                }
+            }
         }
-
-        // isi tapi tak lengkap
-        if ($filled !== 3) {
-            $errors["elemen{$i}"][] =
-                "Elemen {$i} tidak lengkap. Sila lengkapkan Pilihan, Lokasi dan Butiran.";
-        } else {
-            $atLeastOne = true;
+    
+        if (!$atLeastOne) {
+            $errors["minimum"][] =
+                "Sekurang-kurangnya satu elemen mesti dijawab dengan lengkap.";
         }
+    
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors], 422);
+        }
+    
+        return response()->json(['success' => true]);
     }
-
-    if (!$atLeastOne) {
-        $errors["minimum"][] =
-            "Sekurang-kurangnya satu elemen mesti dijawab.";
-    }
-
-    if (!empty($errors)) {
-        return response()->json(['errors' => $errors], 422);
-    }
-
-    return response()->json(['success' => true]);
-    }
+    
 
 
 }

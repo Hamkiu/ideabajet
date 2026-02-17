@@ -42,14 +42,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     <div class="col-md-4">
                         <label>Pilihan :</label>
-                        <select class="custom-select form-control pilihan-extra" name="pilihan_e5_extra[]">
+                        <select class="custom-select form-control pilihan-extra" name="pilihan_e5[]">
                             ${generateElemenOptions()}
                         </select>
                     </div>
 
                     <div class="col-md-4">
                         <label>Aset :</label>
-                        <select class="custom-select form-control aset-extra" name="aset_e5_extra[]">
+                        <select class="custom-select form-control aset-extra" name="aset_e5[]">
                             <option value="">--Sila Pilih Aset--</option>
                         </select>
                     </div>
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <label>Butiran :</label>
                         <input type="text"
                                class="form-control"
-                               name="butiran_e5_extra[]"
+                               name="butiran_e5[]"
                                placeholder="Masukkan Butiran">
                     </div>
 

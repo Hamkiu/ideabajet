@@ -8,4 +8,7 @@ class Aset5 extends Model
 {
     protected $table = 'senarai_aset';
     public $timestamps = false;
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $fillable = ['id', 'id_elemen5', 'nama_aset'];
 }

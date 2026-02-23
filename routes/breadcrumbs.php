@@ -9,6 +9,10 @@ Breadcrumbs::for('pencadang', function ($trail) {
     $trail->push('Home', route('pencadang'));
 });
 
+Breadcrumbs::for('admin', function ($trail) {
+    $trail->push('Admin Dashboard', route('admin'));
+});
+
 //Dashboard > JKKP
 Breadcrumbs::for('jkkpmains', function ($trail) {
     $trail->parent('dashboard');

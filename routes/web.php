@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\JKKPMainsController;
 use App\Http\Controllers\CadanganController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,6 +25,30 @@ Route::prefix('pencadang')->group(function () {
     Route::post('/validatestep2', [CadanganController::class, 'validateStep2'])->name('pencadang.validatestep2');
 
     Route::get('/getaset', [CadanganController::class, 'getAset'])->name('pencadang.getaset');
+});
+
+Route::prefix('admin')->group(function () {
+
+    Route::get('/login', [AdminAuthController::class, 'showLogin'])
+        ->name('admin.login');
+
+    Route::post('/login', [AdminAuthController::class, 'login'])
+        ->name('admin.login.submit');
+
+    Route::post('/logout', [AdminAuthController::class, 'logout'])
+        ->name('admin.logout');
+
+    Route::middleware('admin.auth')->group(function () {
+
+        Route::get('/', [AdminController::class, 'index'])
+            ->name('admin');
+
+        // future routes
+        // Route::get('/users', [AdminController::class, 'users']);
+        // Route::get('/reports', [AdminController::class, 'reports']);
+
+    });
+
 });
 
 

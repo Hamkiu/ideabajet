@@ -11,9 +11,9 @@
             <h5 style="font-weight: bold;">Sila Kemukakan Cadangan Idea Bajet <script>document.write(new Date().getFullYear() + 1)</script> Anda:</h5>
             <div class="form-group">
                 <label for="wfirstName2"> Cadangan (sekiranya ada):<span class="text-danger">*</span> </label>
-                <textarea class="form-control" rows="3" placeholder="tidak melebihi 1000 patah perkataan" name="cadangan" maxlength="1000"></textarea>
+                <textarea class="form-control" rows="3" placeholder="tidak melebihi 1000 patah perkataan" name="cadangan" maxlength="1000" id="cadangan"></textarea>
                 <small class="text-muted">
-                    Maksimum 1000 aksara.
+                    <span id="charCount">0</span> / 1000 aksara
                 </small>
             </div>
         </div>

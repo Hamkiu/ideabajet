@@ -13,6 +13,11 @@ Breadcrumbs::for('admin', function ($trail) {
     $trail->push('Admin Dashboard', route('admin'));
 });
 
+Breadcrumbs::for('admin.list', function ($trail) {
+    $trail->parent('admin');
+    $trail->push('List', route('admin.list'));
+});
+
 //Dashboard > JKKP
 Breadcrumbs::for('jkkpmains', function ($trail) {
     $trail->parent('dashboard');

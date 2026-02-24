@@ -27,6 +27,17 @@ class ModelSeeder extends Seeder
                         'route' => 'admin',
                     ]
                 ]
+            ],
+            [
+                'name' => 'List',
+                'icon' => 'fas fa-list',
+                'subs' => [
+                    [
+                        'name' => 'List',
+                        'code' => 'list',
+                        'route' => 'admin.list',
+                    ]
+                ]
             ]
         ];
 

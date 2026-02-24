@@ -20,6 +20,8 @@
 
     <link href="{{ asset('template/libs/jquery-steps/jquery.steps.css') }}" rel="stylesheet">
     <link href="{{ asset('template/libs/jquery-steps/steps.css') }}" rel="stylesheet">
+    <link href="{{ asset('template/libs/footable/css/footable.bootstrap.min.css') }}" rel="stylesheet">
+
 
     <!-- Custom CSS -->
     <link href="{{ asset('template/css/style.min.css') }}" rel="stylesheet">
@@ -104,7 +106,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center">
-                <p class="">Copyright © <script>document.write(new Date().getFullYear())</script> All Rights Reserved <a target="_blank" href="https://designreset.com/cork-admin/">Musyhabizu</a>.</p>
+                <p class="">Copyright © <script>document.write(new Date().getFullYear())</script> All Rights Reserved <a target="_blank" href="https://www.mbi.gov.my/">Majlis Bandaraya Ipoh</a>.</p>
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->
@@ -159,6 +161,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('template/libs/jquery-steps/build/jquery.steps.min.js') }}"></script>
     <script src="{{ asset('template/libs/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('template/libs/moment/moment.js') }}"></script>
+    <script src="{{ asset('template/libs/footable/js/footable.min.js') }}"></script>
+    <script src="{{ asset('template/js/pages/tables/footable-init.js') }}"></script>
+
+   {{-- highcharts --}}
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
 
 
 

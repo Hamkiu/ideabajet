@@ -143,6 +143,24 @@
     const elemenList7 = @json($elemenList_7);
     const elemenList8 = @json($elemenList_8);
 
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const textarea = document.getElementById('cadangan');
+        const counter  = document.getElementById('charCount');
+
+        textarea.addEventListener('input', function () {
+            let length = this.value.length;
+            counter.textContent = length;
+
+            if (length >= 1000) {
+                counter.style.color = 'red';
+            } else {
+                counter.style.color = '';
+            }
+        });
+
+    });
+
     @if(session('success'))
         Swal.fire({
             icon: 'success',

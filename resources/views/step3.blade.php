@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5 style="font-weight: bold;">Sila Kemukakan Cadangan Idea Bajet <script>document.write(new Date().getFullYear() + 1)</script> Anda:</h5>
+            <h5 style="font-weight: bold;">Sila Kemukakan Cadangan Idea Bajet {{ date('Y') + 1 }} Anda:</h5>
             <div class="form-group">
                 <label for="wfirstName2"> Cadangan (sekiranya ada):<span class="text-danger">*</span> </label>
                 <textarea class="form-control" rows="3" placeholder="tidak melebihi 1000 patah perkataan" name="cadangan" maxlength="1000" id="cadangan"></textarea>

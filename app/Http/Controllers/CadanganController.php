@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\SenaraiElemen;
+use App\Models\SenaraiElemen2027;
 use App\Models\SenaraiLokasi;
+use App\Models\SenaraiZon2027;
 use App\Models\Elemen5;
 use App\Models\Aset5;
 use App\Models\MaklumatPencadang;
@@ -16,90 +18,161 @@ class CadanganController extends Controller
 {
     public function index()
     {
-        $elemenList_1 = SenaraiElemen::whereNotNull('elemen_1')->orderBy('elemen_1', 'desc')->get();
-        $elemenList_2 = SenaraiElemen::whereNotNull('elemen_2')->orderBy('elemen_2', 'desc')->get();
-        $elemenList_3 = SenaraiElemen::whereNotNull('elemen_3')->orderBy('elemen_3', 'desc')->get();
-        $elemenList_4 = SenaraiElemen::whereNotNull('elemen_4')->orderBy('elemen_4', 'desc')->get();
-        $elemenList_5 = Elemen5::whereNotNull('elemen_5')->orderBy('elemen_5', 'asc')->get();
-        $elemenList_6 = SenaraiElemen::whereNotNull('elemen_6')->orderBy('elemen_6', 'desc')->get();
-        $elemenList_7 = SenaraiElemen::whereNotNull('elemen_7')->orderBy('elemen_7', 'desc')->get();
-        $elemenList_8 = SenaraiElemen::whereNotNull('elemen_8')->orderBy('elemen_8', 'desc')->get();
-        $lokasiList = SenaraiLokasi::whereNotNull('lokasi')->orderBy('lokasi', 'asc')->get();
-        return view('pencadang.index', compact('elemenList_1', 'elemenList_2', 'elemenList_3', 'elemenList_4', 'elemenList_5', 'elemenList_6', 'elemenList_7', 'elemenList_8', 'lokasiList'));
+        // $elemenList_1 = SenaraiElemen::whereNotNull('elemen_1')->orderBy('elemen_1', 'desc')->get();
+        // $elemenList_2 = SenaraiElemen::whereNotNull('elemen_2')->orderBy('elemen_2', 'desc')->get();
+        // $elemenList_3 = SenaraiElemen::whereNotNull('elemen_3')->orderBy('elemen_3', 'desc')->get();
+        // $elemenList_4 = SenaraiElemen::whereNotNull('elemen_4')->orderBy('elemen_4', 'desc')->get();
+        // $elemenList_5 = Elemen5::whereNotNull('elemen_5')->orderBy('elemen_5', 'asc')->get();
+        // $elemenList_6 = SenaraiElemen::whereNotNull('elemen_6')->orderBy('elemen_6', 'desc')->get();
+        // $elemenList_7 = SenaraiElemen::whereNotNull('elemen_7')->orderBy('elemen_7', 'desc')->get();
+        // $elemenList_8 = SenaraiElemen::whereNotNull('elemen_8')->orderBy('elemen_8', 'desc')->get();
+        // $lokasiList = SenaraiLokasi::whereNotNull('lokasi')->orderBy('lokasi', 'asc')->get();
+        $elemen2027 = SenaraiElemen2027::whereNotNull('nama')->orderBy('nama', 'asc')->get();
+        $zon2027 = SenaraiZon2027::whereNotNull('zon')->orderBy('zon', 'asc')->get();
+        return view('pencadang.index', compact('elemen2027', 'zon2027'));
+    }
+
+    public function store_OLD(Request $request)
+    {
+        // dd($request->all());
+        $pencadangId = generateId('PC', 'maklumat_pencadang', 'id');
+
+        // Simpan maklumat pencadang
+        $pencadang = MaklumatPencadang::create([
+            'id'        => $pencadangId,
+            'nama'      => strtoupper($request->nama),
+            'email'     => $request->email,
+            'jantina'   => $request->jantina,
+            'bangsa'    => $request->bangsa,
+            'umur'      => $request->umur,
+            'pekerjaan' => $request->pekerjaan,
+            'zon'       => $request->zon_ahli_majlis,
+            'cadangan'  => strtolower($request->cadangan),
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Loop Elemen 1 - 8
+        |--------------------------------------------------------------------------
+        */
+
+        for ($i = 1; $i <= 8; $i++) {
+
+            $pilihanKey = "pilihan_e{$i}";
+            $lokasiKey  = "lokasi_e{$i}";
+            $butiranKey = "butiran_e{$i}";
+            $asetKey    = "aset_e{$i}"; // hanya wujud untuk elemen 5
+
+            if ($request->has($pilihanKey)) {
+
+                foreach ($request->$pilihanKey as $index => $value) {
+
+                    if (!$value) continue; // skip jika kosong
+
+                    $pilihanText = $value;
+                    $asetText = $request->$asetKey[$index] ?? null;
+
+                    // 👉 KHAS UNTUK ELEMEN 5
+                    if ($i == 5) {
+
+                        $elemen = Elemen5::find($value);
+                        $pilihanText = $elemen?->elemen_5;
+
+                        $aset = Aset5::find($asetText);
+                        $asetText = $aset?->nama_aset;
+                    }
+
+                    PilihanPencadang::create([
+                        'id_pencadang' => $pencadangId,
+                        'no_elemen'    => $i,
+                        'pilihan'      => $pilihanText,
+                        'lokasi'       => $request->$lokasiKey[$index] ?? null,
+                        'aset'         => $asetText,
+                        'butiran'      => strtolower($request->$butiranKey[$index] ?? null),
+                    ]);
+                }
+            }
+        }
+        $pencadang->load('elemen');
+        Mail::to($request->email)->send(new IdeaBajetSubmitted($pencadang));
+        // Mail::to($pencadang->email)
+        // ->queue(new IdeaBajetSubmitted($pencadang));
+
+        return redirect()
+            ->route('pencadang')
+            ->with('success', 'Cadangan berjaya disimpan dan email telah dihantar kepada ' . $request->email);
     }
 
     public function store(Request $request)
-{
-    // dd($request->all());
-    $pencadangId = generateId('PC', 'maklumat_pencadang', 'id');
+    {
+        // dd($request->all());
+        $pencadangId = generateId('PC', 'maklumat_pencadang', 'id');
 
-    // Simpan maklumat pencadang
-    $pencadang = MaklumatPencadang::create([
-        'id'        => $pencadangId,
-        'nama'      => strtoupper($request->nama),
-        'email'     => $request->email,
-        'jantina'   => $request->jantina,
-        'bangsa'    => $request->bangsa,
-        'umur'      => $request->umur,
-        'pekerjaan' => $request->pekerjaan,
-        'zon'       => $request->zon_ahli_majlis,
-        'cadangan'  => strtolower($request->cadangan),
-    ]);
+        // Simpan maklumat pencadang
+        $pencadang = MaklumatPencadang::create([
+            'id'        => $pencadangId,
+            'nama'      => strtoupper($request->nama),
+            'email'     => $request->email,
+            'jantina'   => $request->jantina,
+            'bangsa'    => $request->bangsa,
+            'umur'      => $request->umur,
+            'pekerjaan' => $request->pekerjaan,
+            'zon'       => $request->zon_ahli_majlis,
+            'cadangan'  => strtolower($request->cadangan),
+        ]);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Loop Elemen 1 - 8
-    |--------------------------------------------------------------------------
-    */
+        /*
+        |--------------------------------------------------------------------------
+        | Loop Elemen 1 - 8
+        |--------------------------------------------------------------------------
+        */
 
-    for ($i = 1; $i <= 8; $i++) {
+        for ($i = 1; $i <= 8; $i++) {
 
-        $pilihanKey = "pilihan_e{$i}";
-        $lokasiKey  = "lokasi_e{$i}";
-        $butiranKey = "butiran_e{$i}";
-        $asetKey    = "aset_e{$i}"; // hanya wujud untuk elemen 5
+            $pilihanKey = "pilihan_e{$i}";
+            $lokasiKey  = "lokasi_e{$i}";
+            $butiranKey = "butiran_e{$i}";
+            $asetKey    = "aset_e{$i}"; // hanya wujud untuk elemen 5
 
-        if ($request->has($pilihanKey)) {
+            if ($request->has($pilihanKey)) {
 
-            foreach ($request->$pilihanKey as $index => $value) {
+                foreach ($request->$pilihanKey as $index => $value) {
 
-                if (!$value) continue; // skip jika kosong
+                    if (!$value) continue; // skip jika kosong
 
-                $pilihanText = $value;
-                $asetText = $request->$asetKey[$index] ?? null;
+                    $pilihanText = $value;
+                    $asetText = $request->$asetKey[$index] ?? null;
 
-                // 👉 KHAS UNTUK ELEMEN 5
-                if ($i == 5) {
+                    // 👉 KHAS UNTUK ELEMEN 5
+                    if ($i == 5) {
 
-                    $elemen = Elemen5::find($value);
-                    $pilihanText = $elemen?->elemen_5;
+                        $elemen = Elemen5::find($value);
+                        $pilihanText = $elemen?->elemen_5;
 
-                    $aset = Aset5::find($asetText);
-                    $asetText = $aset?->nama_aset;
+                        $aset = Aset5::find($asetText);
+                        $asetText = $aset?->nama_aset;
+                    }
+
+                    PilihanPencadang::create([
+                        'id_pencadang' => $pencadangId,
+                        'no_elemen'    => $i,
+                        'pilihan'      => $pilihanText,
+                        'lokasi'       => $request->$lokasiKey[$index] ?? null,
+                        'aset'         => $asetText,
+                        'butiran'      => strtolower($request->$butiranKey[$index] ?? null),
+                    ]);
                 }
-
-                PilihanPencadang::create([
-                    'id_pencadang' => $pencadangId,
-                    'no_elemen'    => $i,
-                    'pilihan'      => $pilihanText,
-                    'lokasi'       => $request->$lokasiKey[$index] ?? null,
-                    'aset'         => $asetText,
-                    'butiran'      => strtolower($request->$butiranKey[$index] ?? null),
-                ]);
             }
         }
+        $pencadang->load('elemen');
+        Mail::to($request->email)->send(new IdeaBajetSubmitted($pencadang));
+        // Mail::to($pencadang->email)
+        // ->queue(new IdeaBajetSubmitted($pencadang));
+
+        return redirect()
+            ->route('pencadang')
+            ->with('success', 'Cadangan berjaya disimpan dan email telah dihantar kepada ' . $request->email);
     }
-    $pencadang->load('elemen');
-    Mail::to($request->email)->send(new IdeaBajetSubmitted($pencadang));
-    // Mail::to($pencadang->email)
-    // ->queue(new IdeaBajetSubmitted($pencadang));
-
-    return redirect()
-        ->route('pencadang')
-        ->with('success', 'Cadangan berjaya disimpan dan email telah dihantar kepada ' . $request->email);
-}
-
-    
 
     public function validateStep1(Request $request)
     {
@@ -136,6 +209,7 @@ class CadanganController extends Controller
 
     public function validateStep2(Request $request)
     {
+        dd($request->all());
         $errors = [];
         $atLeastOne = false;
     

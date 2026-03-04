@@ -126,6 +126,7 @@
 <script src="{{ asset('template/js/append/elemen7.js') }}"></script>
 <script src="{{ asset('template/js/append/elemen8.js') }}"></script>
 <script src="{{ asset('template/js/get-aset.js') }}"></script>
+<script src="{{ asset('template/js/append/elemen2027.js') }}"></script>
 <script>
       window.APP = {
         validateStep1Url: "{{ route('pencadang.validatestep1') }}",
@@ -133,31 +134,36 @@
         getAsetUrl: "{{ route('pencadang.getaset') }}",
         csrfToken: "{{ csrf_token() }}"
     };
-    const elemenList1 = @json($elemenList_1);
-    const lokasiList  = @json($lokasiList);
-    const elemenList2 = @json($elemenList_2);
-    const elemenList3 = @json($elemenList_3);
-    const elemenList4 = @json($elemenList_4);
-    const elemenList5 = @json($elemenList_5);
-    const elemenList6 = @json($elemenList_6);
-    const elemenList7 = @json($elemenList_7);
-    const elemenList8 = @json($elemenList_8);
 
-    document.addEventListener('DOMContentLoaded', function () {
 
-        const textarea = document.getElementById('cadangan');
-        const counter  = document.getElementById('charCount');
+    $(document).on('input', '.cadangan', function(){
 
-        textarea.addEventListener('input', function () {
-            let length = this.value.length;
-            counter.textContent = length;
+        let words = $(this).val().trim().split(/\s+/).filter(Boolean);
+        let count = words.length;
 
-            if (length >= 1000) {
-                counter.style.color = 'red';
-            } else {
-                counter.style.color = '';
-            }
-        });
+        if(count > 300){
+            words = words.slice(0,300);
+            $(this).val(words.join(" "));
+            count = 300;
+        }
+
+        $(this).closest('.form-group').find('.charCount').text(count);
+
+    });
+
+   //count char for lokasi spesifik
+    $(document).on('input', '.lokasi_spesifik', function(){
+
+        let words = $(this).val().trim().split(/\s+/).filter(Boolean);
+        let count = words.length;
+
+        if(count > 150){
+            words = words.slice(0,150);
+            $(this).val(words.join(" "));
+            count = 150;
+        }
+
+        $(this).closest('.form-group').find('.lokasi_charCount').text(count);
 
     });
 

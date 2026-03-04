@@ -21,4 +21,9 @@ class MaklumatPencadang extends Model
     {
         return $this->hasMany(PilihanPencadang::class, 'id_pencadang', 'id');
     }
+
+    public function elemen2027()
+    {
+        return $this->hasMany(PilihanPencadang2027::class, 'id_pencadang', 'id');
+    }
 }

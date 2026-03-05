@@ -10,6 +10,7 @@ use App\Models\Elemen5;
 use App\Models\Aset5;
 use App\Models\MaklumatPencadang;
 use App\Models\PilihanPencadang;
+use App\Models\PilihanPencadang2027;
 use App\Mail\IdeaBajetSubmitted;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -29,7 +30,8 @@ class CadanganController extends Controller
         // $lokasiList = SenaraiLokasi::whereNotNull('lokasi')->orderBy('lokasi', 'asc')->get();
         $elemen2027 = SenaraiElemen2027::whereNotNull('nama')->orderBy('nama', 'asc')->get();
         $zon2027 = SenaraiZon2027::whereNotNull('zon')->orderBy('zon', 'asc')->get();
-        return view('pencadang.index', compact('elemen2027', 'zon2027'));
+        $kawasan = SenaraiZon2027::orderBy('zon', 'asc')->get();
+        return view('pencadang.index', compact('elemen2027', 'zon2027', 'kawasan'));
     }
 
     public function store_OLD(Request $request)
@@ -121,50 +123,22 @@ class CadanganController extends Controller
             'cadangan'  => strtolower($request->cadangan),
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Loop Elemen 1 - 8
-        |--------------------------------------------------------------------------
-        */
+        foreach ($request->elemen_2027 as $index => $elemenId) {
 
-        for ($i = 1; $i <= 8; $i++) {
-
-            $pilihanKey = "pilihan_e{$i}";
-            $lokasiKey  = "lokasi_e{$i}";
-            $butiranKey = "butiran_e{$i}";
-            $asetKey    = "aset_e{$i}"; // hanya wujud untuk elemen 5
-
-            if ($request->has($pilihanKey)) {
-
-                foreach ($request->$pilihanKey as $index => $value) {
-
-                    if (!$value) continue; // skip jika kosong
-
-                    $pilihanText = $value;
-                    $asetText = $request->$asetKey[$index] ?? null;
-
-                    // 👉 KHAS UNTUK ELEMEN 5
-                    if ($i == 5) {
-
-                        $elemen = Elemen5::find($value);
-                        $pilihanText = $elemen?->elemen_5;
-
-                        $aset = Aset5::find($asetText);
-                        $asetText = $aset?->nama_aset;
-                    }
-
-                    PilihanPencadang::create([
-                        'id_pencadang' => $pencadangId,
-                        'no_elemen'    => $i,
-                        'pilihan'      => $pilihanText,
-                        'lokasi'       => $request->$lokasiKey[$index] ?? null,
-                        'aset'         => $asetText,
-                        'butiran'      => strtolower($request->$butiranKey[$index] ?? null),
-                    ]);
-                }
-            }
+            if(!$elemenId) continue;
+        
+            $elemen = SenaraiElemen2027::find($elemenId);
+        
+            PilihanPencadang2027::create([
+                'id_pencadang' => $pencadangId,
+                'no_elemen'    => $elemenId,
+                'nama_elemen'  => $elemen?->nama,
+                'zon'          => $request->zon_2027[$index] ?? null,
+                'lokasi_spesifik'       => $request->lokasi_spesifik[$index] ?? null,
+                'cadangan'     => strtolower($request->cadangan_2027[$index] ?? null),
+            ]);
         }
-        $pencadang->load('elemen');
+
         Mail::to($request->email)->send(new IdeaBajetSubmitted($pencadang));
         // Mail::to($pencadang->email)
         // ->queue(new IdeaBajetSubmitted($pencadang));
@@ -207,7 +181,7 @@ class CadanganController extends Controller
         return response()->json($aset);
     }
 
-    public function validateStep2(Request $request)
+    public function validateStep2_OLD(Request $request)
     {
         dd($request->all());
         $errors = [];
@@ -264,6 +238,51 @@ class CadanganController extends Controller
         return response()->json(['success' => true]);
     }
     
+    public function validateStep2(Request $request)
+    {
+        // dd($request->all());
+        $elemen   = $request->elemen_2027;
+        $zon      = $request->zon_2027;
+        $lokasi   = $request->lokasi_spesifik;
+        $cadangan = $request->cadangan_2027;
+
+        $adaLengkap = false;
+        $errors = [];
+
+        foreach ($elemen as $i => $value) {
+
+            $e = $elemen[$i] ?? null;
+            $z = $zon[$i] ?? null;
+            $l = $lokasi[$i] ?? null;
+            $c = $cadangan[$i] ?? null;
+
+            // jika ada isi mana-mana field
+            if ($e || $z || $l || $c) {
+
+                if (!$e || !$z || !$l || !$c) {
+                    $errors["row_$i"][] = "Cadangan " . ($i+1) . " tidak lengkap.";
+                }
+
+                if ($e && $z && $l && $c) {
+                    $adaLengkap = true;
+                }
+            }
+        }
+
+        if (!$adaLengkap) {
+            $errors["cadangan"][] = "Sekurang-kurangnya satu cadangan perlu lengkap.";
+        }
+
+        if (!empty($errors)) {
+            return response()->json([
+                'errors' => $errors
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
 
 
 }

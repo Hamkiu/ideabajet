@@ -173,7 +173,7 @@
     <script src="https://code.highcharts.com/modules/drilldown.js"></script>
 
 
-
+    @stack('modal')
     @stack('scripts')
 </body>
 

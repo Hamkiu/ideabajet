@@ -1,6 +1,82 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const data = window.chartData;
+    Highcharts.chart('pbChart', {
+
+        chart: {
+            type: 'bar'
+        },
+
+        title: {
+            text: 'Pekerjaan / Bangsa'
+        },
+
+        credits: { enabled: false },
+
+        colors: ['#1e88e5', '#5e35b1', '#43a047', '#f4511e'],
+
+        xAxis: {
+            categories: data.pekerjaanList,
+            title: { text: null }
+        },
+
+        yAxis: {
+            min: 0,
+            title: { text: 'Jumlah' }
+        },
+
+        legend: {
+            layout: 'horizontal',
+            align: 'right',
+            verticalAlign: 'top'
+        },
+
+        plotOptions: {
+            series: {
+                borderRadius: 4,
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+
+        series: data.seriesPb
+    });
+
+    Highcharts.chart('elemenChart', {
+
+        chart: {
+            type: 'column'
+        },
+
+        title: {
+            text: 'Bilangan Elemen'
+        },
+
+        credits: { enabled: false },
+
+        xAxis: {
+            categories: data.categories,
+            title: { text: 'Elemen' }
+        },
+
+        yAxis: {
+            min: 0,
+            title: { text: 'Bilangan' }
+        },
+
+        plotOptions: {
+            column: {
+                borderRadius: 5
+            }
+        },
+
+        series: [{
+            name: 'Jumlah',
+            colorByPoint: true,
+            data: data.seriesElemen
+        }]
+    });
 
     Highcharts.chart('elemen1Chart', {
 
@@ -259,47 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
         series: data.series8
     });
 
-    Highcharts.chart('pbChart', {
 
-        chart: {
-            type: 'bar'
-        },
-
-        title: {
-            text: 'Pekerjaan / Bangsa'
-        },
-
-        credits: { enabled: false },
-
-        colors: ['#1e88e5', '#5e35b1', '#43a047', '#f4511e'],
-
-        xAxis: {
-            categories: data.pekerjaanList,
-            title: { text: null }
-        },
-
-        yAxis: {
-            min: 0,
-            title: { text: 'Jumlah' }
-        },
-
-        legend: {
-            layout: 'horizontal',
-            align: 'right',
-            verticalAlign: 'top'
-        },
-
-        plotOptions: {
-            series: {
-                borderRadius: 4,
-                dataLabels: {
-                    enabled: true
-                }
-            }
-        },
-
-        series: data.seriesPb
-    });
 
 
 });

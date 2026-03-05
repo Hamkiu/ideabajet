@@ -20,7 +20,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nama</th>
-                                    <th>Cadangan</th>
+                                    <th>Email</th>
                                     <th>Tarikh Hantar</th>
                                     <th>Tindakan</th>
                                 </tr>
@@ -34,7 +34,7 @@
                         
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nama }}</td>
-                                    <td>{{ $item->cadangan }}</td>
+                                    <td>{{ $item->email }}</td>
                                     <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                                     
                         

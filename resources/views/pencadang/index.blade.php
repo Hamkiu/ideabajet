@@ -13,6 +13,11 @@
     50% { opacity: 0; }
     100% { opacity: 1; }
 }
+
+.fa-info-circle:hover{
+    transform: scale(1.15);
+    transition: 0.2s;
+}
 </style>
 @endpush
 
@@ -114,6 +119,50 @@
 </div>
 @endsection
 
+@push('modal')
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Senarai Kawasan dan Zon</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Zon</th>
+                                <th>Senarai Kawasan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            
+                            @foreach($kawasan as $row)
+                            <tr>
+                                <td style="width:20%">
+                                    {{ $row->zon }}
+                                </td>
+                                <td>
+                                    {{ $row->details }}
+                                </td>
+                            </tr>
+                            @endforeach
+            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+@endpush
+
 @push('scripts')
 <script src="{{ asset('template/js/wizard.js') }}"></script>
 <script src="{{ asset('template/js/append-ahli-majlis.js') }}"></script>
@@ -127,6 +176,7 @@
 <script src="{{ asset('template/js/append/elemen8.js') }}"></script>
 <script src="{{ asset('template/js/get-aset.js') }}"></script>
 <script src="{{ asset('template/js/append/elemen2027.js') }}"></script>
+<script src="{{ asset('template/js/wordcount-field.js') }}"></script>
 <script>
       window.APP = {
         validateStep1Url: "{{ route('pencadang.validatestep1') }}",
@@ -134,38 +184,6 @@
         getAsetUrl: "{{ route('pencadang.getaset') }}",
         csrfToken: "{{ csrf_token() }}"
     };
-
-
-    $(document).on('input', '.cadangan', function(){
-
-        let words = $(this).val().trim().split(/\s+/).filter(Boolean);
-        let count = words.length;
-
-        if(count > 300){
-            words = words.slice(0,300);
-            $(this).val(words.join(" "));
-            count = 300;
-        }
-
-        $(this).closest('.form-group').find('.charCount').text(count);
-
-    });
-
-   //count char for lokasi spesifik
-    $(document).on('input', '.lokasi_spesifik', function(){
-
-        let words = $(this).val().trim().split(/\s+/).filter(Boolean);
-        let count = words.length;
-
-        if(count > 150){
-            words = words.slice(0,150);
-            $(this).val(words.join(" "));
-            count = 150;
-        }
-
-        $(this).closest('.form-group').find('.lokasi_charCount').text(count);
-
-    });
 
     @if(session('success'))
         Swal.fire({

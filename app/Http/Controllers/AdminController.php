@@ -4,11 +4,66 @@ namespace App\Http\Controllers;
 
 use App\Models\PilihanPencadang;
 use App\Models\MaklumatPencadang;
+use App\Models\PilihanPencadang2027;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function index()
+    {
+        $pencadang = MaklumatPencadang::count();
+
+        $lelaki = MaklumatPencadang::where('jantina', 'Lelaki')->count();
+        $perempuan = MaklumatPencadang::where('jantina', 'Perempuan')->count();
+        // dd($pencadang);
+        $raw = MaklumatPencadang::selectRaw('pekerjaan, bangsa, COUNT(*) as total')
+        ->groupBy('pekerjaan','bangsa')
+        ->get();
+
+        // Senarai unik pekerjaan
+        $pekerjaanList = $raw->pluck('pekerjaan')->unique()->values();
+
+        // Senarai unik bangsa
+        $bangsaList = $raw->pluck('bangsa')->unique()->values();
+
+        $seriesPb = [];
+
+        foreach ($bangsaList as $bangsa) {
+
+            $data = [];
+
+            foreach ($pekerjaanList as $p) {
+
+                $row = $raw->where('pekerjaan', $p)
+                        ->where('bangsa', $bangsa)
+                        ->first();
+
+                $data[] = $row ? (int)$row->total : 0;
+            }
+
+            $seriesPb[] = [
+                'name' => $bangsa,
+                'data' => $data
+            ];
+        }
+
+        $elemen = PilihanPencadang2027::selectRaw('nama_elemen, COUNT(*) as total')
+            ->groupBy('nama_elemen')
+            ->orderBy('nama_elemen')
+            ->get();
+
+        $categories = $elemen->pluck('nama_elemen');
+        $seriesElemen = $elemen->pluck('total');
+
+        $cadangan = PilihanPencadang2027::count();
+
+        $list_elemen = PilihanPencadang2027::orderBy('nama_elemen')
+            ->get();
+
+        return view('admin.index', compact('pencadang','lelaki','perempuan','cadangan','seriesPb','pekerjaanList','bangsaList','categories','seriesElemen','list_elemen'));
+    }
+
+    public function index_old()
     {
         $pencadang = MaklumatPencadang::count();
 

@@ -18,7 +18,6 @@
     <li><strong>Umur:</strong> {{ $pencadang->umur }}</li>
     <li><strong>Pekerjaan:</strong> {{ $pencadang->pekerjaan }}</li>
     <li><strong>Zon:</strong> {{ $pencadang->zon }}</li>
-    <li><strong>Cadangan:</strong> {{ $pencadang->cadangan }}</li>
     <li><strong>Tarikh Hantar:</strong> {{ $pencadang->created_at->format('d/m/Y H:i') }}</li>
 </ul>
 
@@ -28,20 +27,20 @@
     <thead>
         <tr>
             <th width="80" style="text-align:center;">No Elemen</th>
-            <th>Pilihan</th>
-            <th>Lokasi</th>
-            <th>Aset (Elemen 5 sahaja)</th>
-            <th>Butiran</th>
+            <th>Nama Elemen</th>
+            <th>Zon</th>
+            <th>Lokasi Spesifik</th>
+            <th>Cadangan</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($pencadang->elemen as $item)
+        @foreach($pencadang->elemen2027 as $item)
             <tr>
                 <td width="80" style="text-align:center;">{{ $item->no_elemen }}</td>
-                <td>{{ $item->pilihan }}</td>
-                <td>{{ $item->lokasi ?? '-' }}</td>
-                <td>{{ $item->aset ?? '-' }}</td>
-                <td>{{ $item->butiran }}</td>
+                <td>{{ $item->nama_elemen }}</td>
+                <td>{{ $item->zon ?? '-' }}</td>
+                <td>{{ $item->lokasi_spesifik ?? '-' }}</td>
+                <td>{{ $item->cadangan ?? '-' }}</td>
             </tr>
         @endforeach
     </tbody>

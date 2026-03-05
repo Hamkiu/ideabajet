@@ -9,20 +9,20 @@
     <thead>
         <tr>
             <th>No Elemen</th>
-            <th>Pilihan</th>
-            <th>Lokasi</th>
-            <th>Aset</th>
-            <th>Butiran</th>
+            <th>Nama Elemen</th>
+            <th>Zon</th>
+            <th>Lokasi Spesifik</th>
+            <th>Cadangan</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($data->elemen as $p)
+        @foreach($data->elemen2027 as $p)
         <tr>
             <td>{{ $p->no_elemen }}</td>
-            <td>{{ $p->pilihan }}</td>
-            <td>{{ $p->lokasi }}</td>
-            <td>{{ $p->aset }}</td>
-            <td>{{ $p->butiran }}</td>
+            <td>{{ $p->nama_elemen }}</td>
+            <td>{{ $p->zon }}</td>
+            <td>{{ $p->lokasi_spesifik }}</td>
+            <td>{{ $p->cadangan }}</td>
         </tr>
         @endforeach
     </tbody>

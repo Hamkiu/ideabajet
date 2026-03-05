@@ -6,7 +6,7 @@ $(".validation-wizard").steps({
     transitionEffect: "fade",
     titleTemplate: '<span class="step">#index#</span> #title#',
     labels: {
-        previous: "Sebelumnya",
+        previous: "Sebelum",
         next: "Seterusnya",
         finish: "Hantar"
     },
@@ -18,45 +18,45 @@ $(".validation-wizard").steps({
     }
 
     // VALIDATE STEP 1
-    // if (currentIndex === 0 && newIndex === 1) {
+    if (currentIndex === 0 && newIndex === 1) {
 
-    //     let isValid = false;
+        let isValid = false;
 
-    //     $.ajax({
-    //         url: window.APP.validateStep1Url,
-    //         type: 'POST',
-    //         data: $('.validation-wizard').serialize(),
-    //         async: false,
-    //         headers: {
-    //             'X-CSRF-TOKEN': window.APP.csrfToken
-    //         },
-    //         success: function () {
-    //             isValid = true;
-    //         },
-    //         error: function (xhr) {
+        $.ajax({
+            url: window.APP.validateStep1Url,
+            type: 'POST',
+            data: $('.validation-wizard').serialize(),
+            async: false,
+            headers: {
+                'X-CSRF-TOKEN': window.APP.csrfToken
+            },
+            success: function () {
+                isValid = true;
+            },
+            error: function (xhr) {
 
-    //             let errors = xhr.responseJSON.errors;
-    //             let html = '<ul style="text-align:left;">';
+                let errors = xhr.responseJSON.errors;
+                let html = '<ul style="text-align:left;">';
 
-    //             Object.values(errors).forEach(messages => {
-    //                 messages.forEach(msg => {
-    //                     html += `<li>${msg}</li>`;
-    //                 });
-    //             });
+                Object.values(errors).forEach(messages => {
+                    messages.forEach(msg => {
+                        html += `<li>${msg}</li>`;
+                    });
+                });
 
-    //             html += '</ul>';
+                html += '</ul>';
 
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Maklumat Tidak Lengkap',
-    //                 html: html,
-    //                 confirmButtonText: 'OK'
-    //             });
-    //         }
-    //     });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Maklumat Tidak Lengkap',
+                    html: html,
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
 
-    //     return isValid;
-    // }
+        return isValid;
+    }
 
     // VALIDATE STEP 2
     if (currentIndex === 1 && newIndex === 2) {

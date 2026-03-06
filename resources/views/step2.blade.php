@@ -14,7 +14,7 @@
 
                     <div>
                         CADANGAN ANDA 
-                        <small class="text-muted">(senarai kawasan dan zon
+                        <small class="text-muted">(klik untuk info senarai zon dan kawasan
                         <i class="fas fa-info-circle text-info ms-1"
                         data-toggle="modal"
                         data-target=".bs-example-modal-lg"
@@ -24,7 +24,7 @@
                     <button type="button"
                         class="btn waves-effect waves-light btn-success"
                         id="btnAddElemen2027">
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-plus me-2"></i> Tambah Elemen
                     </button>
         
                 </div>
@@ -74,6 +74,13 @@
                                 </small>
                             </div>
                         </div>
+                        <br>
+
+                        <small class="text-info">
+                            Sila klik (+) jika ada tambahan elemen sebelum klik <b>Seterusnya</b>.
+                        </small>
+
+
                     
                     </div>
                     <div id="elemen2027-container"></div>

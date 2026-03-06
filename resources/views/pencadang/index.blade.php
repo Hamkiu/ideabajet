@@ -4,20 +4,41 @@
 @include('include.error')
 @push('styles')
 <style>
-.blink-text {
-    animation: blink 1.5s infinite;
-}
+    .blink-text {
+        animation: blink 1.5s infinite;
+    }
 
-@keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-}
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
 
-.fa-info-circle:hover{
-    transform: scale(1.15);
-    transition: 0.2s;
-}
+    .fa-info-circle:hover{
+        transform: scale(1.15);
+        transition: 0.2s;
+    }
+
+    .table-kawasan th{
+        text-align:left;
+        font-weight:700;
+    }
+
+    .zon-cell{
+        font-weight:700;
+        background:#f5f7fa;
+        vertical-align:top;
+    }
+
+    .kawasan-list{
+        margin:0;
+        padding-left:18px;
+    }
+
+    .kawasan-list li{
+        margin-bottom:4px;
+        font-weight:500;
+    }
 </style>
 @endpush
 
@@ -129,28 +150,39 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+            
+                    <table class="table table-bordered table-striped table-kawasan">
                         <thead class="table-dark">
                             <tr>
-                                <th>Zon</th>
+                                <th style="width:20%">Zon</th>
                                 <th>Senarai Kawasan</th>
                             </tr>
                         </thead>
-                        <tbody>
             
+                        <tbody>
                             @foreach($kawasan as $row)
                             <tr>
-                                <td style="width:20%">
-                                    {{ $row->zon }}
+            
+                                <!-- ZON -->
+                                <td class="zon-cell">
+                                    {{ strtoupper($row->zon) }}
                                 </td>
+            
+                                <!-- KAWASAN -->
                                 <td>
-                                    {{ $row->details }}
+                                    <ul class="kawasan-list">
+                                        @foreach(explode('/', $row->details) as $k)
+                                            <li>{{ trim($k) }}</li>
+                                        @endforeach
+                                    </ul>
                                 </td>
+            
                             </tr>
                             @endforeach
-            
                         </tbody>
+            
                     </table>
+            
                 </div>
             </div>
             <div class="modal-footer">

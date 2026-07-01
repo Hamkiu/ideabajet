@@ -31,7 +31,8 @@ class CadanganController extends Controller
         $elemen2027 = SenaraiElemen2027::whereNotNull('nama')->orderBy('nama', 'asc')->get();
         $zon2027 = SenaraiZon2027::whereNotNull('zon')->orderBy('zon', 'asc')->get();
         $kawasan = SenaraiZon2027::orderBy('zon', 'asc')->get();
-        return view('pencadang.index', compact('elemen2027', 'zon2027', 'kawasan'));
+        // return view('pencadang.index', compact('elemen2027', 'zon2027', 'kawasan'));
+        return view('error');
     }
 
     public function store_OLD(Request $request)
